@@ -12,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Task
 {
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -44,6 +49,26 @@ class Task
     {
         $this->createdAt = new \Datetime();
         $this->isDone = false;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User
+     *
+     * @return Task
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getId()

@@ -7,6 +7,7 @@ use AppBundle\Form\TaskType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends Controller
 {
@@ -21,7 +22,7 @@ class TaskController extends Controller
     /**
      * @Route("/tasks/create", name="task_create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, UserInterface $user)
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -30,6 +31,7 @@ class TaskController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $task->setUser($user);
 
             $em->persist($task);
             $em->flush();

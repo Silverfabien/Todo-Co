@@ -2,6 +2,7 @@
 
 {% block body %}
     <div class="row">
+        <p><b>Auteur</b> : <b><u>{{ app.user.username }}</u></b></p>
         {{ form_start(form, {'action' : path('task_create')}) }}
             {{ form_widget(form) }}
 
