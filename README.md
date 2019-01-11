@@ -15,7 +15,7 @@ Tâches à réalisés :
 - Si une tâche existante qui n'a pas d'auteur assigné, celui renvera "Anonyme". **Terminer**
 - Seul l'utilisateur qui a crée la/ses tache(s) peut les supprimer. **Terminer** 
 - Lors de la création d'un utilisateur, le rôle 'ROLE_USER' doit lui être assigné. **Terminer**
-- Les utilisateurs ayant le rôle 'ROLE_ADMIN', peuvent modifié les rôles des autres utilisateurs.
-- Les utilisateur ayant le rôle 'ROLE_ADMIN', peuvent accédé a la gestion des utilisateurs.
-- Les taches créer par un autre utilisateur peuvent être supprimé en ayant le rôle 'ROLE_ADMIN'.
+- Les utilisateurs ayant le rôle 'ROLE_ADMIN', peuvent modifié les rôles des autres utilisateurs. **Terminer**
+- Les utilisateur ayant le rôle 'ROLE_ADMIN', peuvent accédé a la gestion des utilisateurs. **Terminer**
+- Les taches créer par un autre utilisateur peuvent être supprimé en ayant le rôle 'ROLE_ADMIN'. **Terminer**
 - Ajout des tests unitaires et fonctionnels automatisés.
