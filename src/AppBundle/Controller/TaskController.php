@@ -4,9 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends Controller
@@ -74,8 +75,13 @@ class TaskController extends Controller
     {
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
+        if ($task->isDone() == false)
+        {
+            $this->addFlash('warning', sprintf('La tâche "%s" a bien été marqué comme non réalisé.', $task->getTitle()));
+            return $this->redirectToRoute('task_list');
+        }
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->addFlash('success', sprintf('La tâche "%s" a bien été marquée comme faite.', $task->getTitle()));
 
         return $this->redirectToRoute('task_list');
     }
@@ -92,5 +98,15 @@ class TaskController extends Controller
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
         return $this->redirectToRoute('task_list');
+    }
+
+    /**
+     * @Route("/tasks/{id}", name="task_view")
+     */
+    public function viewTaskAction($id)
+    {
+        $task = $this->getDoctrine()->getManager()->getRepository(Task::class)->findOneBy(['id' => $id]);
+
+        return $this->redirectToRoute('task_view', ['id' => $task]);
     }
 }

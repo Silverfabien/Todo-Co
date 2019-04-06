@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Task
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $user;
 
