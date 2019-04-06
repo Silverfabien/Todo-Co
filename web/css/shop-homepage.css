@@ -22,7 +22,7 @@ body {
 }
 
 .caption {
-    height: 130px;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -51,4 +51,16 @@ body {
 
 footer {
     margin: 50px 0;
+}
+
+#b-flash {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 100px;
+}
+
+.modal {
+    margin: 5% auto 15% auto;
 }
