@@ -1,12 +1,18 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
+    {% if task.done == true %}
+        <div class="row">
+            <div class="alert alert-warning">
+                <b>&#9888;</b> La tâche a déjà été réalisée, êtes-vous sur de vouloir la modifier ?
+            </div>
+        </div>
+    {% endif %}
     <div class="row">
-        {% if task.user == null %}
-            <p>Créer par <b>Anonyme</b></p>
-        {% else %}
-            <p>Créer par <b>{{ task.user.username }}</b></p>
-        {% endif %}
+        <div>
+            Créer par <b>{% if task.user == null %}Anonyme{% else %}{{ task.user.username }}{% endif %}</b>
+            <a type="button" href="{{ path('task_list') }}" class="btn btn-info" style="float: right">Retour</a>
+        </div>
+        <br>
         {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}
             {{ form_widget(form) }}
 
