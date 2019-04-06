@@ -1,0 +1,52 @@
+{% block flash %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div id="b-flash">
+                <div class="flash-position">
+                    <div class="alert alert-{{ label }} flash-block" id="m-flash">
+                        <button type="button" class="close" href="#" id="suppr" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+{{ include(':default:javascript.html.twig') }}
+{% block javascripts %}
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $('#m-flash').fadeIn(1000);
+                coucou3 = setTimeout(function() {
+                    $('#m-flash').fadeOut(5000);
+                }, 10000);
+
+                $('#m-flash').on('mouseover', function(){
+                    window.clearTimeout(coucou3);
+                    $(this).stop(true).fadeIn(500);
+                });
+
+                $('#m-flash').on('mouseleave', function() {
+                    leave(this);
+                });
+
+                function leave(i){
+                    coucou3 = setTimeout(function(){
+
+                        $(i).fadeOut(5000, function() {
+                            $(this).hide();
+                        });
+                    }, 5000);
+                }
+
+                $('#b-flash').on('click', '#suppr', function (e) {
+                    e.preventDefault();
+                    $('#m-flash').hide();
+                })
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
