@@ -14,8 +14,8 @@
         {% endfor %}
     {% endfor %}
 {% endblock %}
-{{ include(':default:javascript.html.twig') }}
 {% block javascripts %}
+    {{ include(':default:javascript.html.twig') }}
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
