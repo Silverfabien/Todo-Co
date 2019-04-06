@@ -93,4 +93,14 @@ class TaskController extends Controller
 
         return $this->redirectToRoute('task_list');
     }
+
+    /**
+     * @Route("/tasks/{id}", name="task_view")
+     */
+    public function viewTaskAction($id)
+    {
+        $task = $this->getDoctrine()->getManager()->getRepository(Task::class)->findOneBy(['id' => $id]);
+
+        return $this->redirectToRoute('task_view', ['id' => $task]);
+    }
 }

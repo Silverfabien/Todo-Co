@@ -1,43 +1,103 @@
 {% extends 'base.html.twig' %}
-
-{% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
-
+{% block header_img %}<br><img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 {% block body %}
-    <a href="{{ path('task_create') }}" class="btn btn-info pull-right">Créer une tâche</a>
-    <div class="row">
-        {% for task in tasks %}
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 class="pull-right">
-                        {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
-                    </h4>
-                    <h4><a href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
-                    {%  if task.user == null %}
-                        <p>Créer par <b>Anonyme</b></p>
-                    {% else %}
-                        <p>Créer par <b>{{ task.user.username }}</b></p>
-                    {% endif %}
-                    <p>{{ task.content }}</p>
+    <div id="task">
+        <div>
+            <button href="#to-do" id="btn-toDo" class="btn btn-info "><i class="glyphicon glyphicon-remove"></i> Voir la liste des tâches à effectuer</button>
+            <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i> Voir la liste des taches terminer</button>
+            <button href="#all" id="btn-all" class="btn btn-primary">Afficher le tout</button>
+            <a href="{{ path('task_create') }}" class="btn btn-info pull-right"><i class="fa fa-plus"> Créer une tâche</i></a>
+        </div>
+        <br>
+        <div class="row">
+            {% for task in tasks %}
+            <div class="col-sm-4 col-lg-4 col-md-4 {% if task.isDone %}taskDone{% else %}taskToDo{% endif %}" style="margin-bottom: 10px">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="pull-right">
+                            {% if task.isDone %}<span id="done" class="glyphicon glyphicon-ok"></span>{% else %}<span id="to-do" class="glyphicon glyphicon-remove"></span>{% endif %}
+                        </h4>
+                        <h4 class="title" data-title="{{ task.title }}">{{ task.title|truncate(30, true, '...') }}</h4>
+                        <p class="username" data-username="{% if task.user %}{{ task.user.username }}{% else %}Anonyme{% endif %}">Créer par <b>{% if task.user == null %}Anonyme{% else %}{{ task.user.username }}{% endif %}</b></p>
+                        <p class="content" style="word-wrap: break-word" data-content="{{ task.content }}">{{ task.content|truncate(80, false, '...') }}</p>
+                        <a href="#" data-toggle="modal" data-target="#infos" style="float: right" id="btn-modal">Voir plus</a>
+                    </div>
+                    <div>
+                        {% if task.user and task.user.username == app.user.username or app.user.roles == ["ROLE_ADMIN"] %}
+                            <form action="{{ path('task_toggle', {'id' : task.id }) }}">
+                                <button href="#" class="btn btn-{% if not task.isDone %}success{% else %}warning{% endif %} btn-sm pull-right" style="margin-left: 5px">
+                                    {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                                </button>
+                            </form>
+                            <form action="{{ path('task_edit', {'id' : task.id }) }}">
+                                <button class="btn btn-info btn-sm pull-right" style="margin-left: 5px">Éditer</button>
+                            </form>
+                            <form action="{{ path('task_delete', {'id' : task.id }) }}">
+                                <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
-                <div>
-                    <form action="{{ path('task_toggle', {'id' : task.id }) }}">
-                        <button class="btn btn-success btn-sm pull-right">
-                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                        </button>
-                    </form>
-                    {% if task.user and task.user.username == app.user.username or app.user.roles == ["ROLE_ADMIN"] %}
-                        <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                            <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                        </form>
-                    {% endif %}
+            </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal fade" id="infos">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 id="modal-title" class="modal-title"></h4>
+                </div>
+                <div id="modal-body" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <p style="float: left">Ajouter par <b><span id="modal-username"></span></b></p>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
-        {% else %}
-            <div class="alert alert-warning" role="alert">
-                Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
-            </div>
-        {% endfor %}
     </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#task').on('click', '#btn-toDo', function () {
+                    $('.taskToDo').fadeToggle(500);
+                });
+
+                $('#task').on('click', '#btn-done', function () {
+                    $('.taskDone').fadeToggle(500);
+                });
+
+                $('#task').on('click', '#btn-all', function () {
+                    $('.taskDone').fadeIn(500);
+                    $('.taskToDo').fadeIn(500);
+                });
+
+                $('#task').on('click', '#btn-modal', function (e) {
+                    e.preventDefault();
+                    let title = $(this).parent().find('.title').data("title");
+                    let content = $(this).parent().find('.content').data("content");
+                    let username = $(this).parent().find('.username').data("username");
+                    $('#modal-title').html(title);
+                    $('#modal-body').html(content);
+                    $('#modal-username').html(username);
+                })
+
+
+
+            })
+        })(jQuery);
+    </script>
+
 {% endblock %}
