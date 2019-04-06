@@ -11,7 +11,7 @@
         <br>
         <div class="row">
             {% for task in tasks %}
-            <div class="col-sm-4 col-lg-4 col-md-4 {% if task.isDone %}taskDone{% else %}taskToDo{% endif %}" style="margin-bottom: 10px">
+            <div class="col-sm-4 col-lg-4 col-md-4 task-separate {% if task.isDone %}taskDone{% else %}taskToDo{% endif %}">
                 <div class="thumbnail">
                     <div class="caption">
                         <h4 class="pull-right">
@@ -19,18 +19,18 @@
                         </h4>
                         <h4 class="title" data-title="{{ task.title }}">{{ task.title|truncate(30, true, '...') }}</h4>
                         <p class="username" data-username="{% if task.user %}{{ task.user.username }}{% else %}Anonyme{% endif %}">Créer par <b>{% if task.user == null %}Anonyme{% else %}{{ task.user.username }}{% endif %}</b></p>
-                        <p class="content" style="word-wrap: break-word" data-content="{{ task.content }}">{{ task.content|truncate(80, false, '...') }}</p>
-                        <a href="#" data-toggle="modal" data-target="#infos" style="float: right" id="btn-modal">Voir plus</a>
+                        <p class="content" data-content="{{ task.content }}">{{ task.content|truncate(80, false, '...') }}</p>
+                        <a href="#" data-toggle="modal" data-target="#infos" class="pull-right" id="btn-modal">Voir plus</a>
                     </div>
                     <div>
                         {% if task.user and task.user.username == app.user.username or app.user.roles == ["ROLE_ADMIN"] %}
                             <form action="{{ path('task_toggle', {'id' : task.id }) }}">
-                                <button href="#" class="btn btn-{% if not task.isDone %}success{% else %}warning{% endif %} btn-sm pull-right" style="margin-left: 5px">
+                                <button href="#" class="btn btn-{% if not task.isDone %}success{% else %}warning{% endif %} btn-sm pull-right btn-separate">
                                     {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
                                 </button>
                             </form>
                             <form action="{{ path('task_edit', {'id' : task.id }) }}">
-                                <button class="btn btn-info btn-sm pull-right" style="margin-left: 5px">Éditer</button>
+                                <button class="btn btn-info btn-sm pull-right btn-separate">Éditer</button>
                             </form>
                             <form action="{{ path('task_delete', {'id' : task.id }) }}">
                                 <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
@@ -57,7 +57,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <p style="float: left">Ajouter par <b><span id="modal-username"></span></b></p>
+                    <p class="pull-left">Ajouter par <b><span id="modal-username"></span></b></p>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
                 </div>
             </div>

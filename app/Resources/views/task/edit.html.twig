@@ -10,7 +10,7 @@
     <div class="row">
         <div>
             Créer par <b>{% if task.user == null %}Anonyme{% else %}{{ task.user.username }}{% endif %}</b>
-            <a type="button" href="{{ path('task_list') }}" class="btn btn-info" style="float: right">Retour</a>
+            <a type="button" href="{{ path('task_list') }}" class="btn btn-info pull-right">Retour</a>
         </div>
         <br>
         {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}

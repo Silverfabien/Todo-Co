@@ -64,3 +64,19 @@ footer {
 .modal {
     margin: 5% auto 15% auto;
 }
+
+.task-separate {
+    margin-bottom: 10px;
+}
+
+.content {
+    word-wrap: break-word;
+}
+
+.btn-separate {
+    margin-left: 5px;
+}
+
+.navbar-color {
+    background-color: #e3f2fd;
+}
