@@ -92,16 +92,13 @@
     <script>
         (function ($) {
             $(document).ready(function () {
-                $('#task').on('click', '#btn-toDo', function () {
-                    $('.taskToDo').fadeToggle(500);
-                });
-
                 $('#task').on('click', '#btn-done', function () {
-                    $('.taskDone').fadeToggle(500);
+                    $('.taskToDo').fadeToggle(500);
+                    $('.taskDone').fadeIn(500);
                 });
 
-                $('#task').on('click', '#btn-all', function () {
-                    $('.taskDone').fadeIn(500);
+                $('#task').on('click', '#btn-toDo', function () {
+                    $('.taskDone').fadeToggle(500);
                     $('.taskToDo').fadeIn(500);
                 });
 
