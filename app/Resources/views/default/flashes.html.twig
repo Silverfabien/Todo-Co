@@ -20,12 +20,12 @@
         (function ($) {
             $(document).ready(function () {
                 $('#m-flash').fadeIn(1000);
-                coucou3 = setTimeout(function() {
+                timerFlash = setTimeout(function() {
                     $('#m-flash').fadeOut(5000);
                 }, 10000);
 
                 $('#m-flash').on('mouseover', function(){
-                    window.clearTimeout(coucou3);
+                    window.clearTimeout(timerFlash);
                     $(this).stop(true).fadeIn(500);
                 });
 
@@ -34,7 +34,7 @@
                 });
 
                 function leave(i){
-                    coucou3 = setTimeout(function(){
+                    timerFlash = setTimeout(function(){
 
                         $(i).fadeOut(5000, function() {
                             $(this).hide();
