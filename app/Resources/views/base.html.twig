@@ -37,23 +37,22 @@
 
         <!-- Page Content -->
         <div class="container">
-            <div class="row">
-                {% if app.user and app.user.roles == ["ROLE_ADMIN"] %}
-                    <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
-                    <a href="{{ path('user_list') }}" class="btn btn-primary">Liste des utilisateurs</a>
-                    {% if 'homepage' != app.request.attributes.get('_route')  %}
-                        <a href="{{ path('homepage') }}" class="btn btn-success">Acceuil</a>
+            {% if app.user %}
+                <div class="row">
+                    {% if app.user.roles == ["ROLE_ADMIN"] %}
+                        <div class="nav-position">
+                            <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
+                            <a href="{{ path('user_list') }}" class="btn btn-primary">Liste des utilisateurs</a>
+                        </div>
                     {% endif %}
-                {% endif %}
-
-                {% if app.user %}
-                <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
-                {% endif %}
-
-                {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
-                {% endif %}
-            </div>
+                    <div class="nav-position nav-responsive-separate">
+                        {% if 'homepage' != app.request.attributes.get('_route') %}
+                            <a href="{{ path('homepage') }}" class="btn btn-success">Acceuil</a>
+                        {% endif %}
+                        <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                    </div>
+                </div>
+            {% endif %}
 
             <div class="row">
                 <div class="col-md-12">
