@@ -8,7 +8,8 @@
                     <span class="btn-content-responsive-lite">Tâches à effectuer</span>
                 </button>
                 <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>
-                    <span class="btn-content-responsive"> Voir la liste des tâches terminer</span><span class="btn-content-responsive-lite">Tâches terminer</span>
+                    <span class="btn-content-responsive"> Voir la liste des tâches terminer</span>
+                    <span class="btn-content-responsive-lite">Tâches terminer</span>
                 </button>
             </div>
             <div class="btn-task-position">
@@ -23,7 +24,7 @@
                 {% include 'task/item.html.twig' with tasks %}
             </div>
         </div>
-        <button id="load" data-page="3" class="btn btn-info" style="display: block; margin: auto"><i class="fa fa-spinner"></i> Load More</button>
+        <button id="load" data-page="12" class="btn btn-info" style="display: block; margin: auto"><i class="fa fa-spinner"></i> Load More</button>
     </div>
     <div class="modal fade" id="infos">
         <div class="modal-dialog">
@@ -69,21 +70,23 @@
                     $('#modal-username').html(username);
                 });
 
+
                 $('#task').on('click', '#load', function () {
                     let page = $(this).data("page");
                     $.ajax({
                         url: '{{ path('task_load') }}',
                         type: 'POST',
-                        data: 'page=' + page, // On récupére la date dans le button et on l'incrémente
+                        data: 'page=' + page, // On récupére la data dans le button et on l'incrémente
                         dataType: 'json',
-                        success: function (response, statut) {
-                            $("#load").data("page", page + 1);
-                            $('#tasks').html(response.template2);
+                        success: function (response) {
+                            $("#load").data("page", page + 6);
+                            console.log($('#load').data());
+                            $('#tasks').html(response.tasks);
                         },
-                        error: function (result, statut, erreur) {
-                            $('#tasks').html('test');
+                        error: function () {
+                            $('#tasks').html('Une erreur est survenu');
                         }
-                    });
+                    })
                 })
             })
         })(jQuery);
