@@ -37,23 +37,22 @@
 
         <!-- Page Content -->
         <div class="container">
-            <div class="row">
-                {% if app.user and app.user.roles == ["ROLE_ADMIN"] %}
-                    <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
-                    <a href="{{ path('user_list') }}" class="btn btn-primary">Liste des utilisateurs</a>
-                    {% if 'homepage' != app.request.attributes.get('_route')  %}
-                        <a href="{{ path('homepage') }}" class="btn btn-success">Acceuil</a>
+            {% if app.user %}
+                <div class="row">
+                    {% if app.user.roles == ["ROLE_ADMIN"] %}
+                        <div class="nav-position">
+                            <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
+                            <a href="{{ path('user_list') }}" class="btn btn-primary">Liste des utilisateurs</a>
+                        </div>
                     {% endif %}
-                {% endif %}
-
-                {% if app.user %}
-                <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
-                {% endif %}
-
-                {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
-                {% endif %}
-            </div>
+                    <div class="nav-position nav-responsive-separate">
+                        {% if 'homepage' != app.request.attributes.get('_route') %}
+                            <a href="{{ path('homepage') }}" class="btn btn-success">Accueil</a>
+                        {% endif %}
+                        <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                    </div>
+                </div>
+            {% endif %}
 
             <div class="row">
                 <div class="col-md-12">
@@ -71,7 +70,22 @@
             </div>
         </div>
         <!-- /.container -->
-
+        {% block flash %}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div id="b-flash">
+                        <div class="flash-position">
+                            <div class="alert alert-{{ label }} flash-block" id="m-flash">
+                                <button type="button" class="close" href="#" id="suppr" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock %}
         <div class="container">
             <hr>
             <footer>
@@ -85,6 +99,39 @@
     </body>
 </html>
 {% block javascripts %}
-    {{ include(':default:flashes.html.twig') }}
-    {{ include(':default:flashes.html.twig') }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $('#m-flash').fadeIn(1000);
+                timerFlash = setTimeout(function() {
+                    $('#m-flash').fadeOut(5000);
+                }, 10000);
+
+                $('#m-flash').on('mouseover', function(){
+                    window.clearTimeout(timerFlash);
+                    $(this).stop(true).fadeIn(500);
+                });
+
+                $('#m-flash').on('mouseleave', function() {
+                    leave(this);
+                });
+
+                function leave(i){
+                    timerFlash = setTimeout(function(){
+
+                        $(i).fadeOut(5000, function() {
+                            $(this).hide();
+                        });
+                    }, 5000);
+                }
+
+                $('#b-flash').on('click', '#suppr', function (e) {
+                    e.preventDefault();
+                    $('#m-flash').hide();
+                })
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

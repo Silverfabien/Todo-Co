@@ -80,3 +80,42 @@ footer {
 .navbar-color {
     background-color: #e3f2fd;
 }
+
+.task-position {
+    height: 200px;
+}
+
+.btn-task-position, .nav-position {
+    display: inline;
+}
+
+@media screen and (min-width: 993px){
+    .btn-content-responsive-lite {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 992px){
+    .btn-content-responsive {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 575px){
+    .btn-task-content {
+        display: none;
+    }
+
+    .create-task {
+        float: left!important;
+        margin-top: 5px;
+    }
+
+    .btn-task-position, .nav-position {
+        display: block;
+    }
+
+    .nav-responsive-separate {
+        margin-top: 5px;
+    }
+}

@@ -4,7 +4,6 @@
         <p><b>Auteur</b> : <b><u>{{ app.user.username }}</u></b></p>
         {{ form_start(form, {'action' : path('task_create')}) }}
             {{ form_widget(form) }}
-
             <button type="submit" class="btn btn-success pull-right">Ajouter</button>
         {{ form_end(form) }}
 

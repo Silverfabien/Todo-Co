@@ -1,50 +1,30 @@
 {% extends 'base.html.twig' %}
-{% block header_img %}<br><img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 {% block body %}
     <div id="task">
-        <div>
-            <button href="#to-do" id="btn-toDo" class="btn btn-info "><i class="glyphicon glyphicon-remove"></i> Voir la liste des tâches à effectuer</button>
-            <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i> Voir la liste des taches terminer</button>
-            <button href="#all" id="btn-all" class="btn btn-primary">Afficher le tout</button>
-            <a href="{{ path('task_create') }}" class="btn btn-info pull-right"><i class="fa fa-plus"> Créer une tâche</i></a>
+        <div class="row">
+            <div class="btn-task-position">
+                <button href="#to-do" id="btn-toDo" class="btn btn-info "><i class="glyphicon glyphicon-remove"></i>
+                    <span class="btn-content-responsive"> Voir la liste des tâches à effectuer</span>
+                    <span class="btn-content-responsive-lite">Tâches à effectuer</span>
+                </button>
+                <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>
+                    <span class="btn-content-responsive"> Voir la liste des tâches terminer</span>
+                    <span class="btn-content-responsive-lite">Tâches terminer</span>
+                </button>
+            </div>
+            <div class="btn-task-position">
+                <a href="{{ path('task_create') }}" class="btn btn-primary pull-right create-task">
+                    <i class="fa fa-plus"> Créer une tâche</i>
+                </a>
+            </div>
         </div>
         <br>
         <div class="row">
-            {% for task in tasks %}
-            <div class="col-sm-4 col-lg-4 col-md-4 task-separate {% if task.isDone %}taskDone{% else %}taskToDo{% endif %}">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h4 class="pull-right">
-                            {% if task.isDone %}<span id="done" class="glyphicon glyphicon-ok"></span>{% else %}<span id="to-do" class="glyphicon glyphicon-remove"></span>{% endif %}
-                        </h4>
-                        <h4 class="title" data-title="{{ task.title }}">{{ task.title|truncate(30, true, '...') }}</h4>
-                        <p class="username" data-username="{% if task.user %}{{ task.user.username }}{% else %}Anonyme{% endif %}">Créer par <b>{% if task.user == null %}Anonyme{% else %}{{ task.user.username }}{% endif %}</b></p>
-                        <p class="content" data-content="{{ task.content }}">{{ task.content|truncate(80, false, '...') }}</p>
-                        <a href="#" data-toggle="modal" data-target="#infos" class="pull-right" id="btn-modal">Voir plus</a>
-                    </div>
-                    <div>
-                        {% if task.user and task.user.username == app.user.username or app.user.roles == ["ROLE_ADMIN"] %}
-                            <form action="{{ path('task_toggle', {'id' : task.id }) }}">
-                                <button href="#" class="btn btn-{% if not task.isDone %}success{% else %}warning{% endif %} btn-sm pull-right btn-separate">
-                                    {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                                </button>
-                            </form>
-                            <form action="{{ path('task_edit', {'id' : task.id }) }}">
-                                <button class="btn btn-info btn-sm pull-right btn-separate">Éditer</button>
-                            </form>
-                            <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                                <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
+            <div id="tasks">
+                {% include 'task/item.html.twig' with tasks %}
             </div>
-            {% else %}
-                <div class="alert alert-warning" role="alert">
-                    Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
-                </div>
-            {% endfor %}
         </div>
+        <button id="load" data-page="12" class="btn btn-info" style="display: block; margin: auto"><i class="fa fa-spinner"></i> Load More</button>
     </div>
     <div class="modal fade" id="infos">
         <div class="modal-dialog">
@@ -63,7 +43,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -71,16 +50,13 @@
     <script>
         (function ($) {
             $(document).ready(function () {
-                $('#task').on('click', '#btn-toDo', function () {
-                    $('.taskToDo').fadeToggle(500);
-                });
-
                 $('#task').on('click', '#btn-done', function () {
-                    $('.taskDone').fadeToggle(500);
+                    $('.taskToDo').fadeToggle(500);
+                    $('.taskDone').fadeIn(500);
                 });
 
-                $('#task').on('click', '#btn-all', function () {
-                    $('.taskDone').fadeIn(500);
+                $('#task').on('click', '#btn-toDo', function () {
+                    $('.taskDone').fadeToggle(500);
                     $('.taskToDo').fadeIn(500);
                 });
 
@@ -92,12 +68,27 @@
                     $('#modal-title').html(title);
                     $('#modal-body').html(content);
                     $('#modal-username').html(username);
+                });
+
+
+                $('#task').on('click', '#load', function () {
+                    let page = $(this).data("page");
+                    $.ajax({
+                        url: '{{ path('task_load') }}',
+                        type: 'POST',
+                        data: 'page=' + page, // On récupére la data dans le button et on l'incrémente
+                        dataType: 'json',
+                        success: function (response) {
+                            $("#load").data("page", page + 6);
+                            console.log($('#load').data());
+                            $('#tasks').html(response.tasks);
+                        },
+                        error: function () {
+                            $('#tasks').html('Une erreur est survenu');
+                        }
+                    })
                 })
-
-
-
             })
         })(jQuery);
     </script>
-
 {% endblock %}

@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,7 +17,7 @@ class TaskController extends Controller
      */
     public function listAction()
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask()]);
     }
 
     /**
@@ -30,7 +30,7 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $task->setUser($user);
 
@@ -54,7 +54,7 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
@@ -101,12 +101,13 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/tasks/{id}", name="task_view")
+     * @Route("/task", name="task_load")
      */
-    public function viewTaskAction($id)
+    public function ajaxGetTask(Request $request)
     {
-        $task = $this->getDoctrine()->getManager()->getRepository(Task::class)->findOneBy(['id' => $id]);
-
-        return $this->redirectToRoute('task_view', ['id' => $task]);
+        $task = ['tasks' => $this->render('task/item.html.twig',
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
+                ->findAllTask($request->get('page'))])->getContent()];
+        return new JsonResponse($task);
     }
 }
