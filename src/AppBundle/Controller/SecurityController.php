@@ -29,14 +29,14 @@ class SecurityController extends Controller
      */
     public function loginCheck()
     {
-        // This code is never executed.
+        throw new \Exception('This code should not be reached');
     }
 
     /**
      * @Route("/logout", name="logout")
      */
-    public function logoutCheck()
+    public function logout()
     {
-        // This code is never executed.
+        throw new \Exception('This code should not be reached');
     }
 }
