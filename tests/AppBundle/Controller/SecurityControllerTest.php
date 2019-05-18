@@ -44,5 +44,4 @@ class SecurityControllerTest extends WebTestCase
         $controller = new SecurityController();
         $controller->logout();
     }
-
 }

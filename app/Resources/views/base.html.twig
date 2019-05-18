@@ -22,6 +22,11 @@
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
         <![endif]-->
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     </head>
 
     <body>
@@ -29,7 +34,6 @@
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">To Do List app</a>
-
                     <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms" />
                 </div>
             </div>
@@ -53,16 +57,13 @@
                     </div>
                 </div>
             {% endif %}
-
             <div class="row">
                 <div class="col-md-12">
                     {% block header_title %}{% endblock %}
                     {% block header_img %}<br><img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
                 </div>
             </div>
-
             <br />
-
             <div class="row">
                 <div class="col-md-12">
                     {% block body %}{% endblock %}
@@ -76,7 +77,7 @@
                     <div id="b-flash">
                         <div class="flash-position">
                             <div class="alert alert-{{ label }} flash-block" id="m-flash">
-                                <button type="button" class="close" href="#" id="suppr" aria-label="Close">
+                                <button type="button" class="close" href="#" id="delete" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 {{ message }}
@@ -99,8 +100,6 @@
     </body>
 </html>
 {% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
@@ -127,7 +126,7 @@
                     }, 5000);
                 }
 
-                $('#b-flash').on('click', '#suppr', function (e) {
+                $('#b-flash').on('click', '#delete', function (e) {
                     e.preventDefault();
                     $('#m-flash').hide();
                 })

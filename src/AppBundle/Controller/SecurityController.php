@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends Controller
@@ -11,7 +10,7 @@ class SecurityController extends Controller
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -26,6 +25,7 @@ class SecurityController extends Controller
 
     /**
      * @Route("/login_check", name="login_check")
+     * @throws \Exception
      */
     public function loginCheck()
     {
@@ -34,6 +34,7 @@ class SecurityController extends Controller
 
     /**
      * @Route("/logout", name="logout")
+     * @throws \Exception
      */
     public function logout()
     {
