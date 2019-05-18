@@ -6,13 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testIndexPageIfNotLogin()
     {
-        $client = static::createClient();
+        $client = static::createClient([], []);
+        $client->request('GET', '/');
 
-        $crawler = $client->request('GET', '/');
+        $this->assertSame(302, $client->getResponse()->getStatusCode());
+    }
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+    public function testIndexPageIfLogin()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'Silversat',
+            'PHP_AUTH_PW' => 'Shafheux'
+        ]);
+
+        $client->request('GET', '/');
+
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 }

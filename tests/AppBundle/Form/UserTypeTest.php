@@ -3,10 +3,10 @@
 namespace Tests\AppBundle\Form;
 
 use AppBundle\Entity\User;
-use AppBundle\Form\EditUserType;
+use AppBundle\Form\UserType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class EditUserTypeTest extends TypeTestCase
+class UserTypeTest extends TypeTestCase
 {
     public function testFormUser()
     {
@@ -19,19 +19,19 @@ class EditUserTypeTest extends TypeTestCase
             'role' => ['ROLE_USER']
         ];
 
-        $userEditToCompare = $test;
+        $userToCompare = $test;
 
-        $form = $this->factory->create(EditUserType::class, $userEditToCompare);
+        $form = $this->factory->create(UserType::class, $userToCompare);
 
-        $userEdit = $test;
-        $userEdit->setUsername('Un nom');
-        $userEdit->setPassword('test');
-        $userEdit->setEmail('unemail@email.fr');
-        $userEdit->setRoles(['ROLE_USER']);
+        $user = $test;
+        $user->setUsername('Un nom');
+        $user->setPassword('test');
+        $user->setEmail('unemail@email.fr');
+        $user->setRoles(['ROLE_USER']);
         $form->submit($formData);
 
         $this->assertTrue($form->isValid());
-        $this->assertEquals($userEdit, $userEditToCompare);
+        $this->assertEquals($user, $userToCompare);
         $this->assertInstanceOf(User::class, $form->getData());
     }
 }
