@@ -24,7 +24,7 @@
                 {% include 'task/item.html.twig' with tasks %}
             </div>
         </div>
-        <button id="load" data-page="12" class="btn btn-info" style="display: block; margin: auto"><i class="fa fa-spinner"></i> Load More</button>
+        <button id="load" data-page="12" class="btn btn-info center-block"><i class="fa fa-spinner"></i> Charger plus</button>
     </div>
     <div class="modal fade" id="infos">
         <div class="modal-dialog">
@@ -70,24 +70,37 @@
                     $('#modal-username').html(username);
                 });
 
+                $.get('{{ path('task_load') }}', (data) => {
+                    nbTask = data.nbTask;
 
-                $('#task').on('click', '#load', function () {
-                    let page = $(this).data("page");
-                    $.ajax({
-                        url: '{{ path('task_load') }}',
-                        type: 'POST',
-                        data: 'page=' + page, // On récupére la data dans le button et on l'incrémente
-                        dataType: 'json',
-                        success: function (response) {
-                            $("#load").data("page", page + 6);
-                            console.log($('#load').data());
-                            $('#tasks').html(response.tasks);
-                        },
-                        error: function () {
-                            $('#tasks').html('Une erreur est survenu');
-                        }
-                    })
-                })
+                    var result = nbTask - 6 + 12;
+                    console.log(result);
+
+                    if(13 <= result) {
+                        $('#task').on('click', '#load', function () {
+                            let page = $(this).data("page");
+                            $.ajax({
+                                url: '{{ path('task_load') }}',
+                                type: 'POST',
+                                data: 'page=' + page,
+                                dataType: 'json',
+                                success: function (response) {
+                                    $("#load").data("page", page + 6);
+                                    console.log($('#load').data());
+                                    $('#tasks').html(response.tasks);
+                                    if($('#load').data("page") >= result) {
+                                        $('#load').replaceWith('<p class="text-center">Il y a plus rien à charger</p>');
+                                    }
+                                },
+                                error: function () {
+                                    $('#tasks').html('Une erreur est survenu');
+                                }
+                            })
+                        })
+                    } else {
+                        $('#load').replaceWith('<p class="text-center">Il y a plus rien a charger</p>');
+                    }
+                });
             })
         })(jQuery);
     </script>

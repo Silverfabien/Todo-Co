@@ -106,8 +106,9 @@ class TaskController extends Controller
     public function ajaxGetTask(Request $request)
     {
         $task = ['tasks' => $this->render('task/item.html.twig',
-            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
-                ->findAllTask($request->get('page'))])->getContent()];
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask($request->get('page'))])->getContent(),
+            'nbTask' => $this->getDoctrine()->getRepository('AppBundle:Task')->getNbTask()];
+
         return new JsonResponse($task);
     }
 }
