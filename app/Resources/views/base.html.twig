@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +52,9 @@
                         {% if 'homepage' != app.request.attributes.get('_route') %}
                             <a href="{{ path('homepage') }}" class="btn btn-success">Accueil</a>
                         {% endif %}
-                        <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                        <a href="{{ path('logout') }}" class="pull-right btn btn-danger">
+                            <i class="fa fa-power-off"></i> <span class="btn-content-responsive">Se déconnecter</span>
+                        </a>
                     </div>
                 </div>
             {% endif %}

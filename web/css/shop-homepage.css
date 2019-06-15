@@ -50,10 +50,6 @@ footer {
     margin: 5% auto 15% auto;
 }
 
-.task-separate {
-    margin-bottom: 10px;
-}
-
 .content {
     word-wrap: break-word;
 }
@@ -93,19 +89,6 @@ footer {
 }
 
 @media screen and (max-width: 575px){
-    .btn-task-content {
-        display: none;
-    }
-
-    .create-task {
-        float: left!important;
-        margin-top: 5px;
-    }
-
-    .btn-task-position, .nav-position {
-        display: block;
-    }
-
     .nav-responsive-separate {
         margin-top: 5px;
     }
@@ -113,4 +96,70 @@ footer {
     .window-sm {
         display: none;
     }
+}
+
+
+/* Gestion des cards */
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: white;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.border-primary {
+    border-color: #007bff!important;
+}
+
+.border-success {
+    border-color: #28a745!important;
+}
+
+.text-primary {
+    color: #007bff!important;
+}
+
+.text-success {
+    color: #28a745!important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem!important;
+}
+
+.btn-info-modal {
+    float: left;
+}
+
+.task-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.task-separate {
+    margin-top: 10px;
 }
