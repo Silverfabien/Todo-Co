@@ -1,30 +1,27 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div id="task">
-        <div class="row">
-            <div class="btn-task-position">
-                <button href="#to-do" id="btn-toDo" class="btn btn-info "><i class="glyphicon glyphicon-remove"></i>
-                    <span class="btn-content-responsive"> Voir la liste des tâches à effectuer</span>
-                    <span class="btn-content-responsive-lite">Tâches à effectuer</span>
-                </button>
-                <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>
-                    <span class="btn-content-responsive"> Voir la liste des tâches terminer</span>
-                    <span class="btn-content-responsive-lite">Tâches terminer</span>
-                </button>
-            </div>
-            <div class="btn-task-position">
-                <a href="{{ path('task_create') }}" class="btn btn-primary pull-right create-task">
-                    <i class="fa fa-plus"> Créer une tâche</i>
-                </a>
-            </div>
+        <div class="btn-task-position">
+            <button href="#to-do" id="btn-toDo" class="btn btn-info "><i class="glyphicon glyphicon-remove"></i>
+                <span class="btn-content-responsive"> Voir la liste des tâches à effectuer</span>
+                <span class="btn-content-responsive-lite">Tâches à effectuer</span>
+            </button>
+            <button href="#done" id="btn-done" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>
+                <span class="btn-content-responsive"> Voir la liste des tâches terminer</span>
+                <span class="btn-content-responsive-lite">Tâches terminer</span>
+            </button>
         </div>
-        <br>
+        <div class="btn-task-position">
+            <a href="{{ path('task_create') }}" class="btn btn-primary pull-right create-task">
+                <i class="fa fa-plus"> Créer une tâche</i>
+            </a>
+        </div>
         <div class="row">
-            <div id="tasks">
+            <div id="tasks" class="task-separate">
                 {% include 'task/item.html.twig' with tasks %}
             </div>
         </div>
-        <button id="load" data-page="12" class="btn btn-info" style="display: block; margin: auto"><i class="fa fa-spinner"></i> Load More</button>
+        <button id="load" data-page="12" class="btn btn-info center-block"><i class="fa fa-spinner"></i> Charger plus</button>
     </div>
     <div class="modal fade" id="infos">
         <div class="modal-dialog">
@@ -51,43 +48,56 @@
         (function ($) {
             $(document).ready(function () {
                 $('#task').on('click', '#btn-done', function () {
+                    console.log('done');
                     $('.taskToDo').fadeToggle(500);
                     $('.taskDone').fadeIn(500);
                 });
 
                 $('#task').on('click', '#btn-toDo', function () {
+                    console.log('toDo');
                     $('.taskDone').fadeToggle(500);
                     $('.taskToDo').fadeIn(500);
                 });
 
                 $('#task').on('click', '#btn-modal', function (e) {
                     e.preventDefault();
-                    let title = $(this).parent().find('.title').data("title");
-                    let content = $(this).parent().find('.content').data("content");
-                    let username = $(this).parent().find('.username').data("username");
+                    let $post = $(this).parents('.post');
+                    let title = $post.data("title");
+                    let content = $post.data("content");
+                    let username = $post.data("username");
                     $('#modal-title').html(title);
                     $('#modal-body').html(content);
                     $('#modal-username').html(username);
                 });
 
+                $.get('{{ path('task_load') }}', (data) => {
+                    nbTask = data.nbTask;
+                    var result = nbTask - 6 + 12;
 
-                $('#task').on('click', '#load', function () {
-                    let page = $(this).data("page");
-                    $.ajax({
-                        url: '{{ path('task_load') }}',
-                        type: 'POST',
-                        data: 'page=' + page, // On récupére la data dans le button et on l'incrémente
-                        dataType: 'json',
-                        success: function (response) {
-                            $("#load").data("page", page + 6);
-                            console.log($('#load').data());
-                            $('#tasks').html(response.tasks);
-                        },
-                        error: function () {
-                            $('#tasks').html('Une erreur est survenu');
-                        }
-                    })
-                })
+                    if(13 <= result) {
+                        $('#task').on('click', '#load', function () {
+                            let page = $(this).data("page");
+                            $.ajax({
+                                url: '{{ path('task_load') }}',
+                                type: 'POST',
+                                data: 'page=' + page,
+                                dataType: 'json',
+                                success: function (response) {
+                                    $("#load").data("page", page + 6);
+                                    $('#tasks').html(response.tasks);
+                                    if($('#load').data("page") >= result) {
+                                        $('#load').replaceWith('<p class="text-center">Il y a plus rien à charger</p>');
+                                    }
+                                },
+                                error: function () {
+                                    $('#tasks').html('Une erreur est survenu');
+                                }
+                            })
+                        })
+                    } else {
+                        $('#load').replaceWith('<p class="text-center">Il y a plus rien a charger</p>');
+                    }
+                });
             })
         })(jQuery);
     </script>

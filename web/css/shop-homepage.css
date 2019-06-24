@@ -8,17 +8,12 @@ body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
 
+footer {
+    margin: 50px 0;
+}
+
 .slide-image {
     width: 100%;
-}
-
-.carousel-holder {
-    margin-bottom: 30px;
-}
-
-.carousel-control,
-.item {
-    border-radius: 4px;
 }
 
 .caption {
@@ -34,12 +29,6 @@ body {
     width: 100%;
 }
 
-.ratings {
-    padding-right: 10px;
-    padding-left: 10px;
-    color: #d17581;
-}
-
 .thumbnail {
     padding: 0;
 }
@@ -47,10 +36,6 @@ body {
 .thumbnail .caption-full {
     padding: 9px;
     color: #333;
-}
-
-footer {
-    margin: 50px 0;
 }
 
 #b-flash {
@@ -63,10 +48,6 @@ footer {
 
 .modal {
     margin: 5% auto 15% auto;
-}
-
-.task-separate {
-    margin-bottom: 10px;
 }
 
 .content {
@@ -101,21 +82,84 @@ footer {
     }
 }
 
-@media screen and (max-width: 575px){
-    .btn-task-content {
+@media screen and (max-width: 767px){
+    .window-md {
         display: none;
     }
+}
 
-    .create-task {
-        float: left!important;
-        margin-top: 5px;
-    }
-
-    .btn-task-position, .nav-position {
-        display: block;
-    }
-
+@media screen and (max-width: 575px){
     .nav-responsive-separate {
         margin-top: 5px;
     }
+
+    .window-sm {
+        display: none;
+    }
+}
+
+
+/* Gestion des cards */
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: white;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.border-primary {
+    border-color: #007bff!important;
+}
+
+.border-success {
+    border-color: #28a745!important;
+}
+
+.text-primary {
+    color: #007bff!important;
+}
+
+.text-success {
+    color: #28a745!important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem!important;
+}
+
+.btn-info-modal {
+    float: left;
+}
+
+.task-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.task-separate {
+    margin-top: 10px;
 }

@@ -12,6 +12,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends Controller
 {
+    private function checkPermission(Task $task)
+    {
+        if($task->getUser() != $this->getUser()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+    }
+
     /**
      * @Route("/tasks", name="task_list")
      */
@@ -27,7 +34,6 @@ class TaskController extends Controller
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,22 +56,19 @@ class TaskController extends Controller
      */
     public function editAction(Task $task, Request $request)
     {
-        $form = $this->createForm(TaskType::class, $task);
+        $this->checkPermission($task);
 
+        $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
             return $this->redirectToRoute('task_list');
         }
 
-        return $this->render('task/edit.html.twig', [
-            'form' => $form->createView(),
-            'task' => $task,
-        ]);
+        return $this->render('task/edit.html.twig', ['form' => $form->createView(), 'task' => $task]);
     }
 
     /**
@@ -73,8 +76,11 @@ class TaskController extends Controller
      */
     public function toggleTaskAction(Task $task)
     {
+        $this->checkPermission($task);
+
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
+
         if ($task->isDone() == false)
         {
             $this->addFlash('warning', sprintf('La tâche "%s" a bien été marqué comme non réalisé.', $task->getTitle()));
@@ -91,6 +97,8 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
+        $this->checkPermission($task);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($task);
         $em->flush();
@@ -106,8 +114,9 @@ class TaskController extends Controller
     public function ajaxGetTask(Request $request)
     {
         $task = ['tasks' => $this->render('task/item.html.twig',
-            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
-                ->findAllTask($request->get('page'))])->getContent()];
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask($request->get('page'))])->getContent(),
+            'nbTask' => $this->getDoctrine()->getRepository('AppBundle:Task')->getNbTask()];
+
         return new JsonResponse($task);
     }
 }

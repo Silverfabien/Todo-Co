@@ -17,4 +17,13 @@ class TaskRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getNbTask()
+    {
+        $nbTask = $this->createQueryBuilder('t')
+            ->select('COUNT(t)')
+            ->getQuery();
+
+        return $nbTask->getSingleScalarResult();
+    }
 }

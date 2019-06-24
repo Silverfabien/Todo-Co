@@ -12,8 +12,8 @@
                 <tr>
                     <th>#</th>
                     <th>Nom d'utilisateur</th>
-                    <th>Adresse d'utilisateur</th>
-                    <th>Rôles</th>
+                    <th class="window-md">Adresse d'utilisateur</th>
+                    <th class="window-sm">Rôles</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -22,10 +22,10 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ user.username }}</td>
-                        <td>{{ user.email|truncate(30, false, '...') }}</td>
-                        <td>{{ user.roles|json_encode }}</td>
+                        <td class="window-md">{{ user.email|truncate(30, false, '...') }}</td>
+                        <td class="window-sm">{{ user.roles|json_encode }}</td>
                         <td>
-                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
+                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i> <span class="window-md">Éditer</span></a>
                         </td>
                     </tr>
                 {% endfor %}
