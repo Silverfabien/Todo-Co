@@ -129,11 +129,14 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $salt
+     * @param $salt
+     * @return $this
      */
     public function setSalt($salt)
     {
         $this->salt = $salt;
+
+        return $this;
     }
 
     public function eraseCredentials()
