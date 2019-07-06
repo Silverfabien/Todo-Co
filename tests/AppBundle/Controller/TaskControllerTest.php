@@ -27,14 +27,14 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTaskPage()
     {
-        $this->client->request('GET', '/tasks/5/edit');
+        $this->client->request('GET', '/tasks/7/edit');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testDeleteTaskPage()
     {
-        $this->client->request('GET', '/tasks/6/delete');
+        $this->client->request('GET', '/tasks/8/delete');
 
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
@@ -48,7 +48,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTaskIfRealised()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/toggle');
+        $crawler = $this->client->request('GET', '/tasks/7/toggle');
 
         $crawler->selectButton('Marquer comme faite');
         $crawler = $this->client->followRedirect();
@@ -58,7 +58,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTaskIfNotRealised()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/toggle');
+        $crawler = $this->client->request('GET', '/tasks/7/toggle');
 
         $crawler->selectButton('Marquer non terminée');
         $crawler = $this->client->followRedirect();
@@ -87,7 +87,7 @@ class TaskControllerTest extends WebTestCase
     public function testEditTaskPageIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/5/edit');
+        $client->request('GET', '/tasks/7/edit');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -95,7 +95,7 @@ class TaskControllerTest extends WebTestCase
     public function testDeleteTaskPageIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/6/delete');
+        $client->request('GET', '/tasks/8/delete');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -111,7 +111,7 @@ class TaskControllerTest extends WebTestCase
     public function testToggleTaskIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/5/toggle');
+        $client->request('GET', '/tasks/7/toggle');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -215,7 +215,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTaskForm()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/edit');
+        $crawler = $this->client->request('GET', '/tasks/7/edit');
 
         $form = $crawler->selectButton('Modifier')->form();
         $form['task[title]'] = 'Le titre modifier du test';

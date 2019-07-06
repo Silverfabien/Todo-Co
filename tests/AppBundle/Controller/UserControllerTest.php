@@ -47,7 +47,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUserIfExistPage()
     {
-        $this->client->request('GET', '/users/1/edit');
+        $this->client->request('GET', '/users/4/edit');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
@@ -55,7 +55,7 @@ class UserControllerTest extends WebTestCase
     public function testEditUserPageIfExistPageAndIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/users/1/edit');
+        $client->request('GET', '/users/4/edit');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
