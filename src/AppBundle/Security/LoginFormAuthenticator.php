@@ -112,11 +112,4 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
     {
         return true;
     }
-
-    /** Delete Deprecations  */
-
-    public function supports(Request $request)
-    {
-        return false;
-    }
 }
