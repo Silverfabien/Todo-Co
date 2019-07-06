@@ -85,6 +85,7 @@ class UserControllerTest extends WebTestCase
         $form['user[password][first]'] = '12345';
         $form['user[password][second]'] = '12345';
         $form['user[email]'] = 'unemail@test.fr';
+        $form['user[roles]'] = ["ROLE_USER"];
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
