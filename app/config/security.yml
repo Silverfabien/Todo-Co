@@ -14,15 +14,18 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            anonymous: true
             pattern: ^/
-            form_login:
-                login_path: login
-                check_path: login_check
-                always_use_default_target_path:  true
-                default_target_path:  /
-            logout: ~
+            guard:
+                authenticators:
+                    - user.security.login_form_authenticator
+            logout:
+                path: /logout
             logout_on_user_change: true
+            switch_user: ~
+            remember_me:
+                secret: '%secret%'
+                lifetime: 604800
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -30,5 +33,4 @@ security:
         - { path: ^/, roles: ROLE_USER }
 
     role_hierarchy:
-        ROLE_USER: ROLE_USER
         ROLE_ADMIN: ROLE_USER

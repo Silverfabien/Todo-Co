@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,15 +13,11 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $form = $this->createForm(LoginType::class, [
+            'username' => $this->get('security.authentication_utils')->getLastUsername()
+        ]);
 
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', array(
-            'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
+        return $this->render('security/login.html.twig', ['loginForm' => $form->createView()]);
     }
 
     /**

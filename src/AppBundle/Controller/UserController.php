@@ -30,9 +30,6 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-
             $em->persist($user);
             $em->flush();
 
@@ -41,7 +38,7 @@ class UserController extends Controller
             return $this->redirectToRoute('user_list');
         }
 
-        return $this->render('user/create.html.twig', ['form' => $form->createView()]);
+        return $this->render('user/create.html.twig', ['user' => $user, 'form' => $form->createView()]);
     }
 
     /**
