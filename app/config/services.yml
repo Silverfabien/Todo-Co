@@ -34,12 +34,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    user.listener.encode_password_listener:
-        class: AppBundle\Listener\EncodePasswordListener
-        arguments: ['@security.encoder_factory']
-        tags:
-            - { name: doctrine.event_subscriber }
-
     user.security.login_form_authenticator:
         class: AppBundle\Security\LoginFormAuthenticator
         arguments: [
