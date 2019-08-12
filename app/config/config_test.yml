@@ -5,6 +5,7 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
+        name: MOCKSESSION
     profiler:
         collect: false
 
@@ -19,3 +20,15 @@ security:
     firewalls:
         main:
             http_basic: ~
+
+liip_test_fixtures: ~
+
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     localhost
+        port:
+        dbname:   todo_test
+        user:     root
+        password:
+        charset:  UTF8

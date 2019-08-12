@@ -64,6 +64,15 @@ class UserTest extends TestCase
         $this->assertEquals(['ROLE_USER'], $this->user->getRoles());
     }
 
+    public function testUserGetPlainPassword()
+    {
+        $property = $this->reflection->getProperty('plainPassword');
+        $property->setAccessible(true);
+        $property->setValue($this->user, 'plainPassword');
+
+        $this->assertEquals('plainPassword', $this->user->getPlainPassword());
+    }
+
     /* Test SETTER */
 
     public function testUserSetUsername()
@@ -88,5 +97,17 @@ class UserTest extends TestCase
     {
         $this->assertEquals($this->user, $this->user->setRoles(['ROLE_USER']));
         $this->assertAttributeEquals(['ROLE_USER'], 'roles', $this->user);
+    }
+
+    public function testUserSetPlainPassword()
+    {
+        $this->assertEquals($this->user, $this->user->setPlainPassword('test'));
+        $this->assertAttributeEquals('test', 'plainPassword', $this->user);
+    }
+
+    public function testUserSetSalt()
+    {
+        $this->assertEquals($this->user, $this->user->setSalt('test'));
+        $this->assertAttributeEquals('test', 'salt', $this->user);
     }
 }

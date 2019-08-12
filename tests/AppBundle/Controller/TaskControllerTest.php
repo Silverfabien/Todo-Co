@@ -2,18 +2,47 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\TestTaskFixtures;
+use AppBundle\DataFixtures\TestUserFixtures;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
     private $client = null;
 
     public function setUp()
     {
         $this->client = static::createClient([], [
-                'PHP_AUTH_USER' => 'Silversat',
-                'PHP_AUTH_PW' => 'Shafheux'
+                'PHP_AUTH_USER' => 'Admin',
+                'PHP_AUTH_PW' => 'Password'
         ]);
+
+        $this->loadFixtures([
+            TestUserFixtures::class,
+            TestTaskFixtures::class
+            ]);
+    }
+
+    public function testCheckPermissionIsTrue()
+    {
+        $this->client->request('GET', '/tasks/1/edit');
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testCheckPermissionIsFalse()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'User',
+            'PHP_AUTH_PW' => 'Password'
+        ]);
+
+        $client->request('GET', '/tasks/1/edit');
+
+        $this->assertSame(403, $client->getResponse()->getStatusCode());
     }
 
     /** TEST ROUTE IF LOGIN */
@@ -27,14 +56,14 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTaskPage()
     {
-        $this->client->request('GET', '/tasks/5/edit');
+        $this->client->request('GET', '/tasks/1/edit');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testDeleteTaskPage()
     {
-        $this->client->request('GET', '/tasks/6/delete');
+        $this->client->request('GET', '/tasks/2/delete');
 
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
@@ -48,7 +77,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTaskIfRealised()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/toggle');
+        $crawler = $this->client->request('GET', '/tasks/1/toggle');
 
         $crawler->selectButton('Marquer comme faite');
         $crawler = $this->client->followRedirect();
@@ -58,7 +87,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTaskIfNotRealised()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/toggle');
+        $crawler = $this->client->request('GET', '/tasks/2/toggle');
 
         $crawler->selectButton('Marquer non terminée');
         $crawler = $this->client->followRedirect();
@@ -87,7 +116,7 @@ class TaskControllerTest extends WebTestCase
     public function testEditTaskPageIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/5/edit');
+        $client->request('GET', '/tasks/1/edit');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -95,7 +124,7 @@ class TaskControllerTest extends WebTestCase
     public function testDeleteTaskPageIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/6/delete');
+        $client->request('GET', '/tasks/1/delete');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -111,7 +140,7 @@ class TaskControllerTest extends WebTestCase
     public function testToggleTaskIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/tasks/5/toggle');
+        $client->request('GET', '/tasks/1/toggle');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -215,7 +244,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTaskForm()
     {
-        $crawler = $this->client->request('GET', '/tasks/5/edit');
+        $crawler = $this->client->request('GET', '/tasks/1/edit');
 
         $form = $crawler->selectButton('Modifier')->form();
         $form['task[title]'] = 'Le titre modifier du test';

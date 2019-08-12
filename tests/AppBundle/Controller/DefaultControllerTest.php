@@ -17,8 +17,8 @@ class DefaultControllerTest extends WebTestCase
     public function testIndexPageIfLogin()
     {
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'Silversat',
-            'PHP_AUTH_PW' => 'Shafheux'
+            'PHP_AUTH_USER' => 'Admin',
+            'PHP_AUTH_PW' => 'Password'
         ]);
 
         $client->request('GET', '/');

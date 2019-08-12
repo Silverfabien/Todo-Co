@@ -1,17 +1,25 @@
 <?php
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\TestUserFixtures;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
     private $client = null;
 
     public function setUp()
     {
         $this->client = static::createClient([], [
-            'PHP_AUTH_USER' => 'Silversat',
-            'PHP_AUTH_PW' => 'Shafheux'
+            'PHP_AUTH_USER' => 'Admin',
+            'PHP_AUTH_PW' => 'Password'
+        ]);
+
+        $this->loadFixtures([
+            TestUserFixtures::class
         ]);
     }
 
@@ -47,7 +55,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUserIfExistPage()
     {
-        $this->client->request('GET', '/users/1/edit');
+        $this->client->request('GET', '/users/3/edit');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
@@ -55,7 +63,7 @@ class UserControllerTest extends WebTestCase
     public function testEditUserPageIfExistPageAndIfNotLogin()
     {
         $client = static::createClient([], []);
-        $client->request('GET', '/users/1/edit');
+        $client->request('GET', '/users/4/edit');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
@@ -85,6 +93,7 @@ class UserControllerTest extends WebTestCase
         $form['user[password][first]'] = '12345';
         $form['user[password][second]'] = '12345';
         $form['user[email]'] = 'unemail@test.fr';
+        $form['user[roles]'] = ["ROLE_USER"];
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
@@ -94,7 +103,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUserForm()
     {
-        $crawler = $this->client->request('GET', '/users/4/edit');
+        $crawler = $this->client->request('GET', '/users/3/edit');
 
         $form = $crawler->selectButton('Modifier')->form();
 
