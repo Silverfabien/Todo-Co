@@ -1,17 +1,25 @@
 <?php
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\TestUserFixtures;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
     private $client = null;
 
     public function setUp()
     {
         $this->client = static::createClient([], [
-            'PHP_AUTH_USER' => 'Silversat',
-            'PHP_AUTH_PW' => 'Shafheux'
+            'PHP_AUTH_USER' => 'Admin',
+            'PHP_AUTH_PW' => 'Password'
+        ]);
+
+        $this->loadFixtures([
+            TestUserFixtures::class
         ]);
     }
 

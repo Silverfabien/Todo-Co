@@ -16,8 +16,8 @@ class LoginFormAuthenticatorTest extends WebTestCase
         $crawler = $client->getCrawler();
         $form = $crawler->filter('#submit-login')->form();
         $client->submit($form, [
-            'login[username]'    => 'Silversat',
-            'login[password]' => 'Shafheux',
+            'login[username]'    => 'Admin',
+            'login[password]' => 'Password',
         ]);
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
@@ -39,7 +39,7 @@ class LoginFormAuthenticatorTest extends WebTestCase
         $crawler = $client->getCrawler();
         $form = $crawler->filter('#submit-login')->form();
         $client->submit($form, [
-            'login[username]'    => 'Silversat',
+            'login[username]'    => 'Admin',
             'login[password]' => 'MauvaisMotDePasse',
         ]);
 
