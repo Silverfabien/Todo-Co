@@ -119,6 +119,14 @@ class Task
         return $this->isDone;
     }
 
+    /**
+     * @param mixed $isDone
+     */
+    public function setIsDone($isDone)
+    {
+        $this->isDone = $isDone;
+    }
+
     public function toggle($flag)
     {
         $this->isDone = $flag;
