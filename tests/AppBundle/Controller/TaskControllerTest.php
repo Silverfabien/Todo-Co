@@ -2,18 +2,47 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\TestTaskFixtures;
+use AppBundle\DataFixtures\TestUserFixtures;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
     private $client = null;
 
     public function setUp()
     {
         $this->client = static::createClient([], [
-                'PHP_AUTH_USER' => 'Silversat',
-                'PHP_AUTH_PW' => 'Shafheux'
+                'PHP_AUTH_USER' => 'Admin',
+                'PHP_AUTH_PW' => 'Password'
         ]);
+
+        $this->loadFixtures([
+            TestUserFixtures::class,
+            TestTaskFixtures::class
+            ]);
+    }
+
+    public function testCheckPermissionIsTrue()
+    {
+        $this->client->request('GET', '/tasks/1/edit');
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testCheckPermissionIsFalse()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'User',
+            'PHP_AUTH_PW' => 'Password'
+        ]);
+
+        $client->request('GET', '/tasks/1/edit');
+
+        $this->assertSame(403, $client->getResponse()->getStatusCode());
     }
 
     /** TEST ROUTE IF LOGIN */
