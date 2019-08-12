@@ -47,7 +47,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUserIfExistPage()
     {
-        $this->client->request('GET', '/users/4/edit');
+        $this->client->request('GET', '/users/3/edit');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
@@ -95,7 +95,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUserForm()
     {
-        $crawler = $this->client->request('GET', '/users/4/edit');
+        $crawler = $this->client->request('GET', '/users/3/edit');
 
         $form = $crawler->selectButton('Modifier')->form();
 
