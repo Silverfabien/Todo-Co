@@ -6,8 +6,25 @@ use AppBundle\Entity\Task;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Fixtures for tests launched by PhpUnit
+ *
+ * Class TestTaskFixtures
+ *
+ * @category
+ * @package  AppBundle\DataFixtures
+ * @author   Fabien Hollebeque <hollebeque.fabien@hotmail.com>
+ * @license
+ * @link
+ */
 class TestTaskFixtures extends Fixture
 {
+    /**
+     * Function that inserts data into a test database. See in the file app/config_test.yml
+     *
+     * @param ObjectManager $manager
+     * @throws \Exception
+     */
     public function load(ObjectManager $manager)
     {
         $testTaskData = [

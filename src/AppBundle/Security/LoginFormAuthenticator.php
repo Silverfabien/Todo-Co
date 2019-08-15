@@ -19,6 +19,18 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * Authentication with Guard
+ * See https://symfony.com/doc/3.4/security/guard_authentication.html
+ *
+ * Class LoginFormAuthenticator
+ *
+ * @category
+ * @package  AppBundle\Security
+ * @author   Fabien Hollebeque <hollebeque.fabien@hotmail.com>
+ * @license
+ * @link
+ */
 class LoginFormAuthenticator extends AbstractGuardAuthenticator
 {
     use TargetPathTrait;

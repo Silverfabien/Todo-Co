@@ -10,8 +10,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Controller that manages the tasks
+ *
+ * Class TaskController
+ *
+ * @category
+ * @package  AppBundle\Controller
+ * @author   Fabien Hollebeque <hollebeque.fabien@hotmail.com>
+ * @license
+ * @link
+ */
 class TaskController extends Controller
 {
+    /**
+     * Function that looks if the user has the required permission
+     *
+     * @param Task $task
+     */
     private function checkPermission(Task $task)
     {
         if($task->getUser() != $this->getUser()) {
@@ -20,7 +36,11 @@ class TaskController extends Controller
     }
 
     /**
+     * Function that lists all the tasks
+     *
      * @Route("/tasks", name="task_list")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction()
     {
@@ -30,7 +50,14 @@ class TaskController extends Controller
     }
 
     /**
+     * Create task page
+     *
      * @Route("/tasks/create", name="task_create")
+     *
+     * @param Request $request
+     * @param UserInterface $user
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request, UserInterface $user)
     {
@@ -54,7 +81,14 @@ class TaskController extends Controller
     }
 
     /**
+     * Edit page of a task with a permission check
+     *
      * @Route("/tasks/{id}/edit", name="task_edit")
+     *
+     * @param Task $task
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Task $task, Request $request)
     {
@@ -74,7 +108,13 @@ class TaskController extends Controller
     }
 
     /**
+     * Function that manages whether a task has been performed or not
+     *
      * @Route("/tasks/{id}/toggle", name="task_toggle")
+     *
+     * @param Task $task
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleTaskAction(Task $task)
     {
@@ -99,7 +139,13 @@ class TaskController extends Controller
     }
 
     /**
+     * Function that manages the deletion of tasks
+     *
      * @Route("/tasks/{id}/delete", name="task_delete")
+     *
+     * @param Task $task
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteTaskAction(Task $task)
     {
@@ -115,7 +161,13 @@ class TaskController extends Controller
     }
 
     /**
+     * Ajax function to display more tasks
+     *
      * @Route("/task", name="task_load")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function ajaxGetTask(Request $request)
     {
