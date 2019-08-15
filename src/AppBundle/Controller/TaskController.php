@@ -24,7 +24,9 @@ class TaskController extends Controller
      */
     public function listAction()
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask()]);
+        return $this->render('task/list.html.twig',
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask()]
+        );
     }
 
     /**
@@ -83,11 +85,15 @@ class TaskController extends Controller
 
         if ($task->isDone() == false)
         {
-            $this->addFlash('warning', sprintf('La tâche "%s" a bien été marqué comme non réalisé.', $task->getTitle()));
+            $this->addFlash('warning',
+                sprintf('La tâche "%s" a bien été marqué comme non réalisé.', $task->getTitle())
+            );
             return $this->redirectToRoute('task_list');
         }
 
-        $this->addFlash('success', sprintf('La tâche "%s" a bien été marquée comme faite.', $task->getTitle()));
+        $this->addFlash('success',
+            sprintf('La tâche "%s" a bien été marquée comme faite.', $task->getTitle())
+        );
 
         return $this->redirectToRoute('task_list');
     }
@@ -114,7 +120,8 @@ class TaskController extends Controller
     public function ajaxGetTask(Request $request)
     {
         $task = ['tasks' => $this->render('task/item.html.twig',
-            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAllTask($request->get('page'))])->getContent(),
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
+                ->findAllTask($request->get('page'))])->getContent(),
             'nbTask' => $this->getDoctrine()->getRepository('AppBundle:Task')->getNbTask()];
 
         return new JsonResponse($task);
