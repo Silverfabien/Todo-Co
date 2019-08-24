@@ -3,39 +3,74 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Form\EditUserType;
 use AppBundle\Form\UserType;
-use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\FormHandler\CreateUserHandler;
+use AppBundle\FormHandler\EditUserHandler;
+use AppBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Controller that manages users
+ *
+ * Class UserController
+ *
+ * @category
+ * @package  AppBundle\Controller
+ * @author   Fabien Hollebeque <hollebeque.fabien@hotmail.com>
+ * @license
+ * @link
+ */
 class UserController extends Controller
 {
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * UserController constructor.
+     *
+     * @param UserRepository $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+    /**
+     * Function that lists all users
+     *
      * @Route("/users", name="user_list")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
+        return $this->render('user/list.html.twig',
+            ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]
+        );
     }
 
     /**
+     * Function that creates a user
+     *
      * @Route("/users/create", name="user_create")
+     *
+     * @param Request $request
+     * @param CreateUserHandler $userHandler
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, CreateUserHandler $userHandler)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
+        if ($userHandler->createUserHandle($form, $user)) {
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
             return $this->redirectToRoute('user_list');
@@ -45,18 +80,24 @@ class UserController extends Controller
     }
 
     /**
+     * Function that allows to change a user
+     *
      * @Route("/users/{id}/edit", name="user_edit")
+     *
+     * @param User $user
+     * @param Request $request
+     * @param EditUserHandler $userHandler
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function editAction(User $user, Request $request)
+    public function editAction(User $user, Request $request, EditUserHandler $userHandler)
     {
-        $form = $this->createForm(EditUserType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-
-            $this->getDoctrine()->getManager()->flush();
+        if ($userHandler->editUserHandle($form, $user)) {
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
             return $this->redirectToRoute('user_list');

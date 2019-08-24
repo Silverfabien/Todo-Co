@@ -4,7 +4,7 @@
     <div class="row">
         {{ form_start(form, {'action' : path('user_edit', {'id' : user.id})}) }}
         {{ form_widget(form) }}
-        <button type="submit" class="btn btn-success pull-right">Modifier</button>
+        <button type="submit" name="_csrf_token" value="{{ csrf_token('EditUser') }}" class="btn btn-success pull-right">Modifier</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

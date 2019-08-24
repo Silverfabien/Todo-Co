@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Form;
 
 use AppBundle\Entity\User;
-use AppBundle\Form\EditUserType;
+use AppBundle\Form\UserType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class EditUserTypeTest extends TypeTestCase
@@ -21,7 +21,7 @@ class EditUserTypeTest extends TypeTestCase
 
         $userEditToCompare = $test;
 
-        $form = $this->factory->create(EditUserType::class, $userEditToCompare);
+        $form = $this->factory->create(UserType::class, $userEditToCompare);
 
         $userEdit = $test;
         $userEdit->setUsername('Un nom');

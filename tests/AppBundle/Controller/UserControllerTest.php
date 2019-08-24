@@ -107,11 +107,11 @@ class UserControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Modifier')->form();
 
-        $form['edit_user[username]'] = 'Un nom modifié';
-        $form['edit_user[password][first]'] = '54321';
-        $form['edit_user[password][second]'] = '54321';
-        $form['edit_user[email]'] = 'unemailmodifier@test.fr';
-        $form['edit_user[roles]'] = ["ROLE_USER"];
+        $form['user[username]'] = 'Un nom modifié';
+        $form['user[password][first]'] = '54321';
+        $form['user[password][second]'] = '54321';
+        $form['user[email]'] = 'unemailmodifier@test.fr';
+        $form['user[roles]'] = ["ROLE_USER"];
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
