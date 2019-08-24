@@ -42,3 +42,27 @@ services:
             '@security.user_password_encoder.generic',
             '@router']
         public: true
+
+    AppBundle\FormHandler\CreateTaskHandler:
+        tags:
+            - { name: 'create.task.handler' }
+
+    AppBundle\FormHandler\EditTaskHandler:
+        tags:
+            - { name: 'edit.task.handler' }
+
+    AppBundle\FormHandler\CreateUserHandler:
+        tags:
+            - { name: 'create.user.handler' }
+
+    AppBundle\FormHandler\EditUserHandler:
+        tags:
+            - { name: 'edit.user.handler' }
+
+    AppBundle\Repository\TaskRepository:
+        tags:
+            - { name: 'task.repository' }
+
+    AppBundle\Repository\UserRepository:
+        tags:
+            - { name: 'user.repository' }

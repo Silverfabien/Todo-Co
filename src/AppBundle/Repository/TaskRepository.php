@@ -2,7 +2,9 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Task;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Repository for tasks
@@ -15,8 +17,52 @@ use Doctrine\ORM\EntityRepository;
  * @license
  * @link
  */
-class TaskRepository extends EntityRepository
+class TaskRepository extends ServiceEntityRepository
 {
+    /**
+     * TaskRepository constructor.
+     * @param RegistryInterface $registry
+     */
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Task::class);
+    }
+
+    /**
+     * @param $task
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Task $task)
+    {
+        $this->_em->persist($task);
+        $this->_em->flush($task);
+    }
+
+    /**
+     * @param $task
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update(Task $task)
+    {
+        $this->_em->flush($task);
+    }
+
+    /**
+     * @param $task
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(Task $task)
+    {
+        $this->_em->remove($task);
+        $this->_em->flush($task);
+    }
+
     /**
      * Repository related to the Ajax function in the TaskController file
      *
