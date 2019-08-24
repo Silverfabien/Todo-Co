@@ -171,13 +171,16 @@ class TaskController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function ajaxGetTask(Request $request)
     {
+        $getRepo = $this->getDoctrine()->getRepository('AppBundle:Task');
+
         $task = ['tasks' => $this->render('task/item.html.twig',
-            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
-                ->findAllTask($request->get('page'))])->getContent(),
-            'nbTask' => $this->getDoctrine()->getRepository('AppBundle:Task')->getNbTask()];
+            ['tasks' => $getRepo->findAllTask($request->get('page'))])->getContent(),
+            'nbTask' => $getRepo->getNbTask()];
 
         return new JsonResponse($task);
     }
