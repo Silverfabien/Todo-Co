@@ -21,6 +21,7 @@ class TaskRepository extends ServiceEntityRepository
 {
     /**
      * TaskRepository constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
@@ -29,6 +30,8 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
+     * Save in bdd
+     *
      * @param $task
      *
      * @throws \Doctrine\ORM\ORMException
@@ -41,6 +44,8 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
+     * Update in bdd
+     *
      * @param $task
      *
      * @throws \Doctrine\ORM\ORMException
@@ -52,6 +57,8 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
+     * Remove in bdd
+     *
      * @param $task
      *
      * @throws \Doctrine\ORM\ORMException

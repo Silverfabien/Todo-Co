@@ -21,6 +21,7 @@ class UserRepository extends ServiceEntityRepository
 {
     /**
      * UserRepository constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
@@ -29,6 +30,8 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * Save in bdd
+     *
      * @param $user
      *
      * @throws \Doctrine\ORM\ORMException
@@ -41,6 +44,8 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * Update in bdd
+     *
      * @param $user
      *
      * @throws \Doctrine\ORM\ORMException

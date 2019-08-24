@@ -9,20 +9,41 @@ use AppBundle\Repository\TaskRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Calling the form outside the controller
+ *
+ * @category
+ * @package AppBundle\FormHandler
+ * @author   Fabien Hollebeque <hollebeque.fabien@hotmail.com>
+ * @license
+ * @link
+ */
 class CreateTaskHandler
 {
+    /**
+     * @var TaskRepository
+     */
     private $taskRepository;
 
+    /**
+     * CreateTaskHandler constructor.
+     *
+     * @param TaskRepository $taskRepository
+     */
     public function __construct(TaskRepository $taskRepository)
     {
         $this->taskRepository = $taskRepository;
     }
 
     /**
+     * Create Task Form
+     *
      * @param FormInterface $form
      * @param Task $task
      * @param UserInterface $user
+     *
      * @return bool
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

@@ -26,8 +26,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TaskController extends Controller
 {
+    /**
+     * @var TaskRepository
+     */
     private $taskRepository;
 
+    /**
+     * TaskController constructor.
+     *
+     * @param TaskRepository $taskRepository
+     */
     public function __construct(TaskRepository $taskRepository)
     {
         $this->taskRepository = $taskRepository;

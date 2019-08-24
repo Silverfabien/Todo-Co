@@ -24,8 +24,16 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * UserController constructor.
+     *
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
