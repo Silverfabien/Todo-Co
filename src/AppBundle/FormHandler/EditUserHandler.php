@@ -58,7 +58,7 @@ class EditUserHandler
 
             $user->setPassword($password);
 
-            $this->userRepository->update();
+            $this->userRepository->update($user);
 
             return true;
         }

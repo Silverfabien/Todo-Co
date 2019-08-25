@@ -92,7 +92,7 @@ class TaskControllerTest extends WebTestCase
         $crawler->selectButton('Marquer non terminée');
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('div.alert.alert-warning.flash-block')->count());
+        $this->assertSame(1, $crawler->filter('div.alert.alert-success.flash-block')->count());
     }
 
     public function testAjaxGetTask()
