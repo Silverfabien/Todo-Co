@@ -25,7 +25,7 @@ informations de votre bdd :
 
     parameters:
         database_host: 127.0.0.1 #Ip de la base de donnée : 127.0.0.1 = Localhost
-        database_port: null      #Port : MySQL = 3306, MariaDb
+        database_port: null      #Port : MySQL = 3306
         database_name: 'todo&co' #Nom de votre bdd 
         database_user: root      #Identifiant de connexion
         database_password: root  #Mot de passe de connexion
