@@ -1,4 +1,4 @@
-Todo&Co
+<h1>Todo&Co</h1>
 
 -------
 
@@ -6,7 +6,7 @@ Todo&Co
 
 -------------------------------------------------------------------------------
 
-<b>1 > Installation du projet</b>
+<h4>1 > Installation du projet</h4>
 
 Pour installer le projet, il vous suffit de cloner le projet graçe a cette commande dans votre invite de commande :
 
@@ -14,7 +14,7 @@ Pour installer le projet, il vous suffit de cloner le projet graçe a cette comm
 
 -------------------------------------------------------------------------------
 
-<b>2 > Générer les paramètres</b>
+<h4>2 > Générer les paramètres</h4>
 
 Pour générer le fichier parameters.yml, qui contient les information de connexion à la bdd, faites la commande suivante :
 
@@ -32,7 +32,7 @@ informations de votre bdd :
 
 -------------------------------------------------------------------------------
 
-<b>3 > Créer la bdd</b>
+<h4>3 > Créer la bdd</h4>
 
 Pour créer la bdd, faites la commande suivante :
 
@@ -44,6 +44,12 @@ Ensuite faites cette commande pour ajouter les tables :
 
 Si vous souhaitez ajouté un jeux de données dans votre bdd, faites cette commande :
 
-    php bin/console doctrine:fixtures/load
+    php bin/console doctrine:fixtures:load
     
 -------------------------------------------------------------------------------
+
+<h4>Documentation</h4>
+
+<p><a href="https://github.com/Silverfabien/Todo-Co/blob/master/docs/Documentation_Technique.pdf">Documentation technique</a></p>
+<p><a href="https://github.com/Silverfabien/Todo-Co/blob/master/docs/Quality_and_performance_report.pdf">Rapport de qualité et de performance</a></p>
+<p><a href="https://github.com/Silverfabien/Todo-Co/blob/master/Contributing.md">Contribution au projet</a></p>
