@@ -4,18 +4,46 @@ Todo&Co
 
 <h3>Projet 8 OpenClassroom</h3>
 
-Amélioration + ajout de fonctionnalité sur un site déjà existant.
+-------------------------------------------------------------------------------
+
+<b>1 > Installation du projet</b>
+
+Pour installer le projet, il vous suffit de cloner le projet graçe a cette commande dans votre invite de commande :
+
+    git clone https://github.com/Silverfabien/Todo-Co.git
 
 -------------------------------------------------------------------------------
 
-Tâches à réalisés :
+<b>2 > Générer les paramètres</b>
 
-- Lors de la création d'une tâches, l'utilisateur connecté doit être assigné. **Terminer**
-- Lors de l'édition d'une tâche, l'auteur ne peut pas être modifié. **Terminer**
-- Si une tâche existante qui n'a pas d'auteur assigné, celui renvera "Anonyme". **Terminer**
-- Seul l'utilisateur qui a crée la/ses tache(s) peut les supprimer. **Terminer** 
-- Lors de la création d'un utilisateur, le rôle 'ROLE_USER' doit lui être assigné. **Terminer**
-- Les utilisateurs ayant le rôle 'ROLE_ADMIN', peuvent modifié les rôles des autres utilisateurs. **Terminer**
-- Les utilisateur ayant le rôle 'ROLE_ADMIN', peuvent accédé a la gestion des utilisateurs. **Terminer**
-- Les taches créer par un autre utilisateur peuvent être supprimé en ayant le rôle 'ROLE_ADMIN'. **Terminer**
-- Ajout des tests unitaires et fonctionnels automatisés.
+Pour générer le fichier parameters.yml, qui contient les information de connexion à la bdd, faites la commande suivante :
+
+    composer install
+
+Quand le fichier parameters.yml a été générer, vous devez modifier les lignes suivantes qui devront correspondre aux
+informations de votre bdd :
+
+    parameters:
+        database_host: 127.0.0.1 #Ip de la base de donnée : 127.0.0.1 = Localhost
+        database_port: null      #Port : MySQL = 3306, MariaDb
+        database_name: 'todo&co' #Nom de votre bdd 
+        database_user: root      #Identifiant de connexion
+        database_password: root  #Mot de passe de connexion
+
+-------------------------------------------------------------------------------
+
+<b>3 > Créer la bdd</b>
+
+Pour créer la bdd, faites la commande suivante :
+
+    php bin/console doctrine:database:create
+
+Ensuite faites cette commande pour ajouter les tables :
+
+    php bin/console doctrine:schema:update --force
+
+Si vous souhaitez ajouté un jeux de données dans votre bdd, faites cette commande :
+
+    php bin/console doctrine:fixtures/load
+    
+-------------------------------------------------------------------------------
