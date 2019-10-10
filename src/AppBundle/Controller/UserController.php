@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\UserEditPasswordType;
 use AppBundle\Form\UserEditType;
 use AppBundle\Form\UserType;
 use AppBundle\FormHandler\CreateUserHandler;
@@ -99,11 +100,40 @@ class UserController extends Controller
         $form = $this->createForm(UserEditType::class, $user)->handleRequest($request);
 
         if ($userHandler->editUserHandle($form, $user)) {
-            $this->addFlash('success', "L'utilisateur a bien été modifié");
+            $this->addFlash('success', sprintf('L\'utilisateur "%s" a bien été modifié', $user->getUsername()));
 
             return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
+
+    /**
+     * Function that allows to change password a user
+     *
+     * @Route("/users/{id}/edit_password", name="user_edit_password")
+     *
+     * @param User $user
+     * @param Request $request
+     * @param EditUserHandler $userHandler
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function editPasswordAction(User $user, Request $request, EditUserHandler $userHandler)
+    {
+        $form = $this->createForm(UserEditPasswordType::class, $user)->handleRequest($request);
+
+        if($userHandler->editUserPasswordHandle($form, $user)) {
+            $this->addFlash('success', sprintf('Le mot de passe de "%s" a bien été modifier', $user->getUsername()));
+
+            return $this->redirectToRoute('user_list');
+        }
+
+        return $this->render('user/editPassword.html.twig', ['form' => $form->createView(), 'user' => $user]);
+    }
+
+
 }

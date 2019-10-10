@@ -58,6 +58,32 @@ class EditUserHandler
 
             return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Edit User Password Form
+     *
+     * @param FormInterface $form
+     * @param User $user
+     *
+     * @return bool
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function editUserPasswordHandle(FormInterface $form, User $user)
+    {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+
+            $this->userRepository->update($user);
+
+            return true;
+        }
+
         return false;
     }
 }
