@@ -54,10 +54,6 @@ class EditUserHandler
     public function editUserHandle(FormInterface $form, User $user)
     {
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
-
-            $user->setPassword($password);
-
             $this->userRepository->update($user);
 
             return true;

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\UserEditType;
 use AppBundle\Form\UserType;
 use AppBundle\FormHandler\CreateUserHandler;
 use AppBundle\FormHandler\EditUserHandler;
@@ -95,7 +96,7 @@ class UserController extends Controller
      */
     public function editAction(User $user, Request $request, EditUserHandler $userHandler)
     {
-        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
+        $form = $this->createForm(UserEditType::class, $user)->handleRequest($request);
 
         if ($userHandler->editUserHandle($form, $user)) {
             $this->addFlash('success', "L'utilisateur a bien été modifié");
