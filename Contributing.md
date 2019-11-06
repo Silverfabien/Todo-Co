@@ -20,6 +20,12 @@ Pour toutes modifications faites, le code devra être envoyé dans une branche s
 Toutes modification devra être tester avec PhpUnit. Les tests devront être executé avec la commande `vendor/bin/phpunit`
 pour vous assurer que vos modifications ne créer pas de bugs sur nos tests.
 
+Voici les commandes liées à phpunit :
+- `vendor\bin\simple-phpunit` Lance tous les tests
+- `vendot\bin\simple-phpunit tests\AppBundle\<Dossier>\<NomDuFichier>` Lance tous les tests du fichier
+- `vendor\bin\simple-phpunit --filter <NomDeLaMéthode>` Test la méthode
+- `vendor\bin\simple-phpunit --coverage-html var\coverage` Coverage
+
 Quand vos modification sont terminer et que les tests sont valides, vous pouvez soumettre votre pull request et attendre
 qu'elle soit accepter.
 
